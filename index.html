@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>PCTI PHP Challenges</title>
+		<style>
+			.coordinate {width: 20px;}
+			.output {height: 40px; color: red;}
+		</style>
+  </head>
+  <body style="text-align:center">
+		
+		<!-- Challenge 1 -->
+		<h3>Challenge 1</h3>
+		<form>
+			<label>Enter a binary string</label> <br>
+				<input type="text" name="inputString" /> <br>
+			<button type="button" name="button" value="bin" onclick="btn1()">Binary to Integer</button>
+		</form>
+		<div id="output1" class="output"></div>
+		<form>
+			<label>Enter an integer</label> <br>
+				<input type="text" name="inputString" /> <br>
+			<button type="button" name="button" value="int" onclick="btn2()">Convert to Binary!</button>
+		</form>
+		<div id="output2" class="output"></div>
+		<form>
+			<label>Enter two binary strings</label> <br>
+				<input type="text" name="inputString1" /> +
+				<input type="text" name="inputString2" /> <br>
+			<button type="button" name="button" value="add" onclick="btn3()">Find Binary Sum</button>
+		</form>
+		<div id="output3" class="output"></div>
+		
+		<!-- Challenge 2 -->
+		<h3>Challenge 2</h3>
+		<form>
+			<label>Enter the bottom-left point of a rectangle</label> <br>
+				( <input type="text" name="x1" class="coordinate" placeholder ="x"/> ,
+				<input type="text" name="y1" class="coordinate" placeholder ="y"/> ) <br>
+			<label>Enter the top-right point of a rectangle.</label> <br>
+				( <input type="text" name="x2" class="coordinate" placeholder ="x"/> ,
+				<input type="text" name="y2" class="coordinate" placeholder ="y"/> ) <br>
+			<label>Enter a random point.</label> <br>
+				( <input type="text" name="x3" class="coordinate" placeholder ="x"/> ,
+				<input type="text" name="y3" class="coordinate" placeholder ="y"/> ) <br>			
+			<button type="button" name="button" value="rec" onclick="btn4()">Is the point in the rectangle?</button>
+		</form>
+		<div id="output4" class="output"></div>
+		
+		<!-- Challenge 3 -->
+		<h3>Challenge 3</h3>
+		<form>
+			<label>Click to find multiples of 3, 5, and 3 &amp; 5</label> <br>
+			<button type="button" name="button" value="mpl" onclick="btn5()">Click Here</button>
+		</form>
+		<div id="output5" class="output"></div>
+		<script type='text/javascript'>
+		
+			//format data for POST from a given form
+		  function getRequestBody(form) {
+        var pieces = [];
+        var elements = form.elements;
+        for (var i = 0; i < elements.length; i++) {
+          var element = elements[i];
+          var name = encodeURIComponent(element.name);
+          var value = encodeURIComponent(element.value);
+          pieces.push(name + "=" + value);
+      	}
+      	return pieces.join("&");
+      }
+			
+			//this function creates an XMLHttpRequest object to send data to server via POST
+		  function PostData(form, output) {
+        var xhr;
+        if (window.XMLHttpRequest) {
+          xhr = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+						xhr = new ActiveXObject("Msxml2.XMLHTTP");
+					} else {
+							throw new Error("Ajax is not supported by this browser");
+						}
+		    xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            if (xhr.status == 200 && xhr.status < 300) {
+              document.getElementById(output).innerHTML = xhr.responseText;
+            }
+          }
+        }
+				var input = getRequestBody(form); //format data
+		    xhr.open('POST', 'functions.php');
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send(input);
+      }
+			
+			//event handlers
+			function btn1() {
+				var form = document.forms[0];
+				PostData(form, 'output1');
+			}
+			function btn2() {
+				var form = document.forms[1];
+				PostData(form, 'output2');
+			}
+			function btn3() {
+				var form = document.forms[2];
+				PostData(form, 'output3');
+			}
+			function btn4() {
+				var form = document.forms[3];
+				PostData(form, 'output4');
+			}
+			function btn5() {
+				var form = document.forms[4];
+				PostData(form, 'output5');
+			}
+		</script>
+  </body>
+</html>
